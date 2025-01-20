@@ -5,9 +5,11 @@ export class React {
                 console.log(element);
                 if(typeof element === 'function'){
                     const Comp = new element();
+                    const r = Comp.render();
+                    Comp.children = r.children;
                     return {
                         component: Comp,
-                        ...Comp.render()
+                        ...r
                     }
                 }else if(typeof element === 'object'){
                     if(typeof element.type === 'function'){
@@ -35,6 +37,7 @@ export class React {
             case 'function':
                 const Comp = new type(properties);
                 const rendered = Comp.render();
+                Comp.children = rendered.children;
                 return {
                     ...rendered,
                     component: Comp

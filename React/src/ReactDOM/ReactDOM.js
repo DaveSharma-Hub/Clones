@@ -43,9 +43,11 @@ export class ReactDOM {
 
 
     static render(el, rootId){
+        this.rootId = rootId;
         const Comp = new el();
         if(Comp instanceof(Component)){
             const root = Comp.render();
+            Comp.children = root.children;
             const vDOM = {
                 root: {
                     ...root,
@@ -56,10 +58,10 @@ export class ReactDOM {
         }else{
             throw Error("Initial class needs to be a Component type");
         }
-        this.hydrateDOM(rootId);
+        this.hydrateDOM(this.rootId);
     }
 
     static rerender(){
-
+        this.hydrateDOM(this.rootId);
     }
 }

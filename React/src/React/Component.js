@@ -1,3 +1,5 @@
+import { ReactDOM } from "../ReactDOM/ReactDOM.js";
+
 export class Component {
     constructor(props){
         this.props = props;
@@ -13,10 +15,11 @@ export class Component {
         }else{
             throw Error("Invalid state value passed in");
         }
-        
+        console.log(this.children);
         this.children?.forEach((child)=>{
             if(child instanceof Component){
                 child.render();
+                ReactDOM.rerender();
             }
         });
     }
