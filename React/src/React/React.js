@@ -2,7 +2,6 @@ export class React {
     static createElement(type, properties = {}, ...children){
         const recursivelySearchChildren = (children) => {
             return children.map((element) => {
-                console.log(element);
                 if(typeof element === 'function'){
                     const Comp = new element();
                     const r = Comp.render();
