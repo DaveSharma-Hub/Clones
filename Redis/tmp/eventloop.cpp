@@ -6,35 +6,11 @@
 #include <thread>
 #include <chrono>
 #include <map>
+#include "socket.cpp"
 
 using namespace std;
 
 typedef void(*func_event_ptr)(void);
-
-struct Output{
-    string output;
-    string message;
-}typedef Output;
-
-struct Input{
-    string command;
-    string key;
-    string value;
-}typedef Input;
-
-Input convert_incoming_message(string input){
-    Input i1;
-    int first = input.find(" ");
-    i1.command = input.substr(0, first);
-    string substring1 = input.substr(first+1, input.length()-1);
-    int second = substring1.find(" ");
-    i1.key = substring1.substr(0, second);
-    if(i1.command == "SET"){
-        string substring2 = substring1.substr(second+1, substring1.length()-1);
-        i1.value =substring2;
-    }
-    return i1;
-}
 
 class DataStore{
   private:
@@ -120,10 +96,12 @@ class EventQueue: public Queue<T>{
 class EventLoop {
     private:
         EventQueue<EventQueuePayload>* queue;
-        
+        SocketServer* server;
     public:
         EventLoop(){
             this->queue = new EventQueue<EventQueuePayload>();
+            this->server = new SocketServer(8080, 3);
+            this->store = new ExtendedDataStore();
         }
         
         void newEvent(EventQueuePayload event){
@@ -131,17 +109,31 @@ class EventLoop {
         }
         
         void start(){
+            this->server->startServer();
             while(true){
-                
+                this->server->reset();
+
                 // //new connection, then connect
-                // if(){
-                    
-                // }
+                if(this->server->isNewConnection()){
+                    this->acceptNewConnection->acceptNewConnection();
+                }
                 
                 // //new incoming data then add to queue
-                // if(){
-                    
-                // }
+                std::vector<int> fds = this->server->isNewMessage()
+                if(fds.size()>0){
+                    std::vector<Message> msgs = this->server->acceptNewMessage(fds);
+                    for(Message m:msgs){
+                        EventQueuePayload e;
+                        e.fnExecution = ;
+                        e.store = this->store;
+                        e.command = m.message.command;
+                        e.key = m.message.key;
+                        e.value = m.message.value;
+                        e.clientSockFileDescriptor = m.sockFd;
+                        e.socketResponseFn = ;
+                        this->queue->enqueue(e);
+                    }
+                }
                 
                 // if data in queue then process it
                 if(this->queue->hasEventReady()){
@@ -212,6 +204,8 @@ int main() {
     Output o2 = store.executeCommand(i2.command, i2.key, i2.value);
     cout<<o2.output<<endl;
     
+    loop->start();
+
     return 0;
 }
 
