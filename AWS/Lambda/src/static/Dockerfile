@@ -1,6 +1,6 @@
 
             FROM node:20
-            FROM docker image
+            FROM null
 
             WORKDIR /app
 

@@ -10,7 +10,6 @@ app.use(express.json());
 
 
 (async function(){
-    const dockerImage = 'docker image';
-    const server = new Server({PORT: PORT, app: app, dockerImage});
+    const server = new Server({PORT: PORT, app: app, dockerImage: null});
     await server.start();
 })();

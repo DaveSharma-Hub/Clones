@@ -1,7 +1,7 @@
 export class MetaData{
     constructor({
         dockerImage,
-        max_concurrent = 10, 
+        max_concurrent = 2, 
         max_cpu = 1, 
         max_memory = 1000 // as MB 
     }){
