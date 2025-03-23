@@ -9,6 +9,6 @@ import (
 func main(){
 
 	fmt.Println("Main");
-	parent();
-	child();
+	parent.runParent();
+	child.runChild();
 }

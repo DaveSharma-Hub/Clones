@@ -4,6 +4,6 @@ import (
 	"fmt"
 )
 
-func child(){
+func runChild(){
 	fmt.Println("Child")
 }
