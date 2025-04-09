@@ -60,10 +60,12 @@ func PublishMessageFanInFactory()*PubSubFanIn{
             ch := RoutineChannelFactory(fn);
             go (func(){
                 // main <- <- ch;
-                value := <- ch;
-                for _, sub := range(subscribers) {
-                    // value := <- main;
-                    sub(value);
+                for {
+                    value := <- ch;
+                    for _, sub := range(subscribers) {
+                        // value := <- main;
+                        sub(value);
+                    }
                 }
             })();
             channels = append(channels, ch);
